@@ -16,14 +16,19 @@ bot = commands.Bot(command_prefix=getprefix)
 @bot.event
 async def on_ready():
     print("logged in as {}".format(bot.user.name))
-    
-async def karochetambilbagietonadobilosdelatbvrode(ctx): #был какой-то там баг и это вроде помогло
-    pass                                             #!
-                                                     #!
-@bot.command(aliases = ['префикс', 'pref', 'преф'])  #!
-@commands.has_permissions( administrator = True )    #!
-async def prefix(ctx, prefix = None):                #!
-  await karochetambilbagietonadobilosdelatbvrode(ctx)#!
+
+@bot.event
+async def on_guild_join(guild):
+	if not coll2.find_one({"guild_id": guild.id, "guild_name": str(guild.name)}): # проверка на присутствие префикса в бд
+		coll2.insert_one({"guild_id": guild.id, "guild_name": str(guild.name), "prefix": "+"}) # если нет его там то он == +
+	else:
+		coll2.delete_one({"guild_id": guild.id, "guild_name": str(guild.name)}): # если он есть то удаляем его от туда
+		coll2.insert_one({"guild_id": guild.id, "guild_name": str(guild.name), "prefix": "+"}) # и делаем его "+"
+          
+
+@bot.command(aliases = ['префикс', 'pref', 'преф'])  
+@commands.has_permissions( administrator = True )    
+async def prefix(ctx, prefix = None):                
 	if ctx.author.guild_permissions.administrator: #проверка на админку
 		if prefix != None: # проверка введён ли префикс
 			if len(prefix) < 2: # проверка длины префикса(нельзя больше 1 символа)
