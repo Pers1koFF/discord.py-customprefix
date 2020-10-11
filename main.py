@@ -22,7 +22,7 @@ async def on_guild_join(guild):
 	if not coll2.find_one({"guild_id": guild.id, "guild_name": str(guild.name)}): # проверка на присутствие префикса в бд
 		coll2.insert_one({"guild_id": guild.id, "guild_name": str(guild.name), "prefix": "+"}) # если нет его там то он == +
 	else:
-		coll2.delete_one({"guild_id": guild.id, "guild_name": str(guild.name)}): # если он есть то удаляем его от туда
+		coll2.delete_one({"guild_id": guild.id, "guild_name": str(guild.name)}) # если он есть то удаляем его от туда
 		coll2.insert_one({"guild_id": guild.id, "guild_name": str(guild.name), "prefix": "+"}) # и делаем его "+"
           
 
