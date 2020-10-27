@@ -9,7 +9,7 @@ async def getprefix(bot, message):
 		coll2.insert_one({"guild_id": message.guild.id, "guild_name": str(message.guild.name), "prefix": "+"}) # если нет его там то он == +
 	else:
 		data = coll2.find_one({"guild_id": message.guild.id, "guild_name": str(message.guild.name)}) # если есть то берем его оттуда
-		return data['prefix']
+		return data['prefix'] #возвращает префикс
 
 bot = commands.Bot(command_prefix=getprefix)
 
